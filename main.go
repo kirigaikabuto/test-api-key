@@ -1,1 +1,7 @@
-package test_api_key
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("sdsdds")
+}
