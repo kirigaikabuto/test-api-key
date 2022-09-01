@@ -7,14 +7,14 @@ services:
       POSTGRES_USER: setdatauser
       POSTGRES_PASSWORD: 123456789
       POSTGRES_DB: test_api_key
+      POSTGRES_HOST: localhost
       PGDATA: /pg-data
     ports:
       - "5433:5432"
   app:
     build: .
-    image: kirigaikabuto/n50-teacher-api
+    image: kirigaikabuto/api-key-test-api
     depends_on:
-      - redis
       - database
     ports:
       - "5000:5000"

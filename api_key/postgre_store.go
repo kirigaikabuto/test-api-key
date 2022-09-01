@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/google/uuid"
 	"github.com/kirigaikabuto/test-api-key/common"
+	_ "github.com/lib/pq"
 	"log"
 )
 
@@ -86,7 +87,7 @@ func (s *store) List() ([]ApiKey, error) {
 	var objects []ApiKey
 	var values []interface{}
 	q := "select " +
-		"id, key, created_date " +
+		"id, key, name " +
 		"from api_keys"
 	rows, err := s.db.Query(q, values...)
 	if err != nil {

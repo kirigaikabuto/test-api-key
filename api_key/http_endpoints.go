@@ -46,7 +46,7 @@ func (h *httpEndpoints) MakeList() gin.HandlerFunc {
 			context.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
-		context.JSON(http.StatusCreated, resp)
+		context.JSON(http.StatusOK, resp)
 	}
 }
 
@@ -59,7 +59,7 @@ func (h *httpEndpoints) MakeGetByKey() gin.HandlerFunc {
 			context.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
-		context.JSON(http.StatusCreated, resp)
+		context.JSON(http.StatusOK, resp)
 	}
 }
 
@@ -72,6 +72,6 @@ func (h *httpEndpoints) MakeGetById() gin.HandlerFunc {
 			context.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
-		context.JSON(http.StatusCreated, resp)
+		context.JSON(http.StatusOK, resp)
 	}
 }

@@ -72,6 +72,9 @@ func run(c *cli.Context) error {
 	}
 
 	apiKeyStore, err := api_key.NewPostgresStore(cfg)
+	if err != nil {
+		return err
+	}
 	apiKeyService := api_key.NewService(apiKeyStore)
 	apiKeyHttpEndpoints := api_key.NewHttpEndpoints(setdata_common.NewCommandHandler(apiKeyService))
 	r := gin.Default()

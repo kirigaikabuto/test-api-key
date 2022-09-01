@@ -2,7 +2,7 @@ all: run
 .PHONY: all
 
 run:
-	docker build -t kirigaikabuto/n50-teacher-api:latest .
+	docker build -t kirigaikabuto/api-key-test-api:latest .
 	docker-compose up --build
 git:
 	git add .

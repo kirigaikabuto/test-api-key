@@ -1,8 +1,8 @@
 {
   "db": {
     "primary": {
-      "host": "localhost",
-      "port": 5432,
+      "host": "192.168.0.10",
+      "port": 5433,
       "name": "test_api_key",
       "user": "setdatauser",
       "pass": "123456789",
