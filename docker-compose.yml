@@ -7,7 +7,6 @@ services:
       POSTGRES_USER: setdatauser
       POSTGRES_PASSWORD: 123456789
       POSTGRES_DB: test_api_key
-      POSTGRES_HOST: localhost
       PGDATA: /pg-data
     ports:
       - "5433:5432"
