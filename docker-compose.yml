@@ -10,6 +10,8 @@ services:
       PGDATA: /pg-data
     ports:
       - "5433:5432"
+    volumes:
+      - /var/lib/postgresql/data
   app:
     build: .
     image: kirigaikabuto/api-key-test-api
