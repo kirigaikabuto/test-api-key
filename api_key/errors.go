@@ -6,6 +6,6 @@ import (
 )
 
 var (
-	ErrCreateApiKeyUnknown = com.NewMiddleError(errors.New("could not create api key: unknown error"), 500, 101)
-	ErrApiKeyNotFound      = com.NewMiddleError(errors.New("api key not found"), 500, 102)
+	ErrCreateApiKeyUnknown = com.NewMiddleError(errors.New("could not create api key: unknown error"), 500, 1)
+	ErrApiKeyNotFound      = com.NewMiddleError(errors.New("api key not found"), 500, 2)
 )

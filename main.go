@@ -7,6 +7,7 @@ import (
 	setdata_common "github.com/kirigaikabuto/setdata-common"
 	"github.com/kirigaikabuto/test-api-key/api_key"
 	"github.com/kirigaikabuto/test-api-key/common"
+	"github.com/kirigaikabuto/test-api-key/endpoints_permission"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
@@ -84,6 +85,20 @@ func run(c *cli.Context) error {
 		apiKeyGroup.GET("/id", apiKeyHttpEndpoints.MakeGetById())
 		apiKeyGroup.GET("/key", apiKeyHttpEndpoints.MakeGetByKey())
 		apiKeyGroup.GET("/", apiKeyHttpEndpoints.MakeList())
+	}
+	endpointsPermissionPostgreStore, err := endpoints_permission.NewPostgresStore(cfg)
+	if err != nil {
+		return err
+	}
+	endpointsPermissionService := endpoints_permission.NewService(endpointsPermissionPostgreStore)
+	endpointsPermissionHttpEndpoints := endpoints_permission.NewHttpEndpoints(setdata_common.NewCommandHandler(endpointsPermissionService))
+	endpointsPermission := r.Group("/endpoints-permission")
+	{
+		endpointsPermission.POST("/", endpointsPermissionHttpEndpoints.MakeCreate())
+		endpointsPermission.GET("/id", endpointsPermissionHttpEndpoints.MakeGetById())
+		endpointsPermission.GET("/api-key-id", endpointsPermissionHttpEndpoints.MakeGetByApiKeyId())
+		endpointsPermission.GET("/", endpointsPermissionHttpEndpoints.MakeList())
+		endpointsPermission.PUT("/add-endpoint", endpointsPermissionHttpEndpoints.MakeAddEndpoint())
 	}
 	log.Info().Msg("app is running on port:" + port)
 	server := &http.Server{
