@@ -8,6 +8,8 @@ import (
 	"github.com/kirigaikabuto/test-api-key/api_key"
 	"github.com/kirigaikabuto/test-api-key/common"
 	"github.com/kirigaikabuto/test-api-key/endpoints_permission"
+	"github.com/kirigaikabuto/test-api-key/mdw"
+	"github.com/kirigaikabuto/test-api-key/products"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
@@ -71,7 +73,6 @@ func run(c *cli.Context) error {
 		Database: postgresDatabaseName,
 		Params:   postgresParams,
 	}
-
 	apiKeyStore, err := api_key.NewPostgresStore(cfg)
 	if err != nil {
 		return err
@@ -79,6 +80,7 @@ func run(c *cli.Context) error {
 	apiKeyService := api_key.NewService(apiKeyStore)
 	apiKeyHttpEndpoints := api_key.NewHttpEndpoints(setdata_common.NewCommandHandler(apiKeyService))
 	r := gin.Default()
+	apiKeyMdw := mdw.NewApiKeyMdw(apiKeyStore)
 	apiKeyGroup := r.Group("/api-key")
 	{
 		apiKeyGroup.POST("/", apiKeyHttpEndpoints.MakeCreate())
@@ -101,6 +103,12 @@ func run(c *cli.Context) error {
 		endpointsPermission.PUT("/add-endpoint", endpointsPermissionHttpEndpoints.MakeAddEndpoint())
 		endpointsPermission.PUT("/remove-endpoint", endpointsPermissionHttpEndpoints.MakeRemoveEndpoint())
 		endpointsPermission.PUT("/", endpointsPermissionHttpEndpoints.MakeUpdate())
+	}
+	productsService := products.NewService(endpointsPermissionPostgreStore)
+	productsHttpEndpoints := products.NewHttpEndpoints(setdata_common.NewCommandHandler(productsService))
+	productsGroup := r.Group("/products", apiKeyMdw.MakeApiKeyMiddleware())
+	{
+		productsGroup.GET("/", productsHttpEndpoints.MakeListProducts())
 	}
 	log.Info().Msg("app is running on port:" + port)
 	server := &http.Server{

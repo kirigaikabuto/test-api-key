@@ -26,12 +26,12 @@ func (h *httpEndpoints) MakeCreate() gin.HandlerFunc {
 		cmd := &CreateApiKeyCommand{}
 		err := context.BindJSON(&cmd)
 		if err != nil {
-			context.AbortWithError(http.StatusBadRequest, err)
+			context.AbortWithStatusJSON(http.StatusBadRequest, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithError(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusCreated, resp)
@@ -43,7 +43,7 @@ func (h *httpEndpoints) MakeList() gin.HandlerFunc {
 		cmd := &ListApiKeyCommand{}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithError(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)
@@ -56,7 +56,7 @@ func (h *httpEndpoints) MakeGetByKey() gin.HandlerFunc {
 		cmd.Key = context.Request.URL.Query().Get("key")
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithError(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)
@@ -69,7 +69,7 @@ func (h *httpEndpoints) MakeGetById() gin.HandlerFunc {
 		cmd.Id = context.Request.URL.Query().Get("id")
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithError(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)

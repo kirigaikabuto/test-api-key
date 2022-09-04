@@ -1,7 +1,10 @@
 package endpoints_permission
 
+import "github.com/kirigaikabuto/test-api-key/api_key"
+
 type service struct {
-	store Store
+	store       Store
+	apiKeyStore api_key.Store
 }
 
 type Service interface {

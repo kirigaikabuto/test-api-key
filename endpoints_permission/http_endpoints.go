@@ -29,12 +29,12 @@ func (h *httpEndpoints) MakeCreate() gin.HandlerFunc {
 		cmd := &CreateEndpointsPermissionCommand{}
 		err := context.BindJSON(&cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusBadRequest, err)
+			context.AbortWithStatusJSON(http.StatusBadRequest, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusCreated, resp)
@@ -46,7 +46,7 @@ func (h *httpEndpoints) MakeList() gin.HandlerFunc {
 		cmd := &ListEndpointsPermissionsCommand{}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)
@@ -59,7 +59,7 @@ func (h *httpEndpoints) MakeGetByApiKeyId() gin.HandlerFunc {
 		cmd := &GetByApiKeyIdEndpointsPermissionsCommand{apiKeyId}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)
@@ -72,7 +72,7 @@ func (h *httpEndpoints) MakeGetById() gin.HandlerFunc {
 		cmd := &GetByIdEndpointsPermissionCommand{id}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)
@@ -86,12 +86,12 @@ func (h *httpEndpoints) MakeAddEndpoint() gin.HandlerFunc {
 		cmd.Id = id
 		err := context.BindJSON(&cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusBadRequest, err)
+			context.AbortWithStatusJSON(http.StatusBadRequest, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)
@@ -105,12 +105,12 @@ func (h *httpEndpoints) MakeRemoveEndpoint() gin.HandlerFunc {
 		cmd.Id = id
 		err := context.BindJSON(&cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusBadRequest, err)
+			context.AbortWithStatusJSON(http.StatusBadRequest, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)
@@ -124,12 +124,12 @@ func (h *httpEndpoints) MakeUpdate() gin.HandlerFunc {
 		cmd.Id = id
 		err := context.BindJSON(&cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusBadRequest, err)
+			context.AbortWithStatusJSON(http.StatusBadRequest, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		resp, err := h.ch.ExecCommand(cmd)
 		if err != nil {
-			context.AbortWithStatusJSON(http.StatusInternalServerError, err)
+			context.AbortWithStatusJSON(http.StatusInternalServerError, setdata_common.ErrToHttpResponse(err))
 			return
 		}
 		context.JSON(http.StatusOK, resp)
