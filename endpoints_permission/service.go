@@ -10,6 +10,8 @@ type Service interface {
 	GetByApiKeyId(cmd *GetByApiKeyIdEndpointsPermissionsCommand) (*EndpointsPermission, error)
 	List(cmd *ListEndpointsPermissionsCommand) ([]EndpointsPermission, error)
 	AddEndpointToEndpointsPermissions(cmd *AddEndpointToEndpointsPermissionsCommand) (*EndpointsPermission, error)
+	RemoveEndpointFromEndpointsPermissions(cmd *RemoveEndpointFromEndpointsPermissionsCommand) (*EndpointsPermission, error)
+	UpdateEndpointsPermission(cmd *UpdateEndpointsPermissionCommand) (*EndpointsPermission, error)
 }
 
 func NewService(s Store) Service {
@@ -44,5 +46,31 @@ func (s *service) AddEndpointToEndpointsPermissions(cmd *AddEndpointToEndpointsP
 	return s.store.Update(&EndpointsPermissionUpdate{
 		Id:        cmd.Id,
 		Endpoints: &endpointsPerms.Endpoints,
+	})
+}
+
+func (s *service) RemoveEndpointFromEndpointsPermissions(cmd *RemoveEndpointFromEndpointsPermissionsCommand) (*EndpointsPermission, error) {
+	endpointsPerms, err := s.GetById(&GetByIdEndpointsPermissionCommand{Id: cmd.Id})
+	if err != nil {
+		return nil, err
+	}
+	currentIndex := 0
+	for i, v := range endpointsPerms.Endpoints {
+		if v == cmd.Endpoint {
+			currentIndex = i
+			break
+		}
+	}
+	endpointsPerms.Endpoints = append(endpointsPerms.Endpoints[:currentIndex], endpointsPerms.Endpoints[currentIndex+1:]...)
+	return s.store.Update(&EndpointsPermissionUpdate{
+		Id:        cmd.Id,
+		Endpoints: &endpointsPerms.Endpoints,
+	})
+}
+
+func (s *service) UpdateEndpointsPermission(cmd *UpdateEndpointsPermissionCommand) (*EndpointsPermission, error) {
+	return s.store.Update(&EndpointsPermissionUpdate{
+		Id:       cmd.Id,
+		ApiKeyId: cmd.ApiKeyId,
 	})
 }

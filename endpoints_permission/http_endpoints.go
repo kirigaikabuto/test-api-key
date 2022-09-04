@@ -12,6 +12,8 @@ type HttpEndpoints interface {
 	MakeGetByApiKeyId() gin.HandlerFunc
 	MakeGetById() gin.HandlerFunc
 	MakeAddEndpoint() gin.HandlerFunc
+	MakeRemoveEndpoint() gin.HandlerFunc
+	MakeUpdate() gin.HandlerFunc
 }
 
 type httpEndpoints struct {
@@ -80,6 +82,44 @@ func (h *httpEndpoints) MakeGetById() gin.HandlerFunc {
 func (h *httpEndpoints) MakeAddEndpoint() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		cmd := &AddEndpointToEndpointsPermissionsCommand{}
+		id := context.Request.URL.Query().Get("id")
+		cmd.Id = id
+		err := context.BindJSON(&cmd)
+		if err != nil {
+			context.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+		resp, err := h.ch.ExecCommand(cmd)
+		if err != nil {
+			context.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+		context.JSON(http.StatusOK, resp)
+	}
+}
+
+func (h *httpEndpoints) MakeRemoveEndpoint() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		cmd := &RemoveEndpointFromEndpointsPermissionsCommand{}
+		id := context.Request.URL.Query().Get("id")
+		cmd.Id = id
+		err := context.BindJSON(&cmd)
+		if err != nil {
+			context.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+		resp, err := h.ch.ExecCommand(cmd)
+		if err != nil {
+			context.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+		context.JSON(http.StatusOK, resp)
+	}
+}
+
+func (h *httpEndpoints) MakeUpdate() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		cmd := &UpdateEndpointsPermissionCommand{}
 		id := context.Request.URL.Query().Get("id")
 		cmd.Id = id
 		err := context.BindJSON(&cmd)

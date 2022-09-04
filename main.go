@@ -99,6 +99,8 @@ func run(c *cli.Context) error {
 		endpointsPermission.GET("/api-key-id", endpointsPermissionHttpEndpoints.MakeGetByApiKeyId())
 		endpointsPermission.GET("/", endpointsPermissionHttpEndpoints.MakeList())
 		endpointsPermission.PUT("/add-endpoint", endpointsPermissionHttpEndpoints.MakeAddEndpoint())
+		endpointsPermission.PUT("/remove-endpoint", endpointsPermissionHttpEndpoints.MakeRemoveEndpoint())
+		endpointsPermission.PUT("/", endpointsPermissionHttpEndpoints.MakeUpdate())
 	}
 	log.Info().Msg("app is running on port:" + port)
 	server := &http.Server{

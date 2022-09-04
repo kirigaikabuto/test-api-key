@@ -40,3 +40,21 @@ type AddEndpointToEndpointsPermissionsCommand struct {
 func (cmd *AddEndpointToEndpointsPermissionsCommand) Exec(svc interface{}) (interface{}, error) {
 	return svc.(Service).AddEndpointToEndpointsPermissions(cmd)
 }
+
+type RemoveEndpointFromEndpointsPermissionsCommand struct {
+	Endpoint string `json:"endpoint"`
+	Id       string `json:"id"`
+}
+
+func (cmd *RemoveEndpointFromEndpointsPermissionsCommand) Exec(svc interface{}) (interface{}, error) {
+	return svc.(Service).RemoveEndpointFromEndpointsPermissions(cmd)
+}
+
+type UpdateEndpointsPermissionCommand struct {
+	Id       string  `json:"id"`
+	ApiKeyId *string `json:"api_key_id"`
+}
+
+func (cmd *UpdateEndpointsPermissionCommand) Exec(svc interface{}) (interface{}, error) {
+	return svc.(Service).UpdateEndpointsPermission(cmd)
+}
